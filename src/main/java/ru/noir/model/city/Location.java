@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
+    private final int id;
     private final String name;
     private final LocationType type;
     private final String description;
@@ -17,7 +18,8 @@ public class Location {
     private Item hiddenClue;
     private boolean isSearched;
 
-    public Location(LocationEnum locationEnum, int x, int y, NPC permanentResident) {
+    public Location(int id, LocationEnum locationEnum, int x, int y, NPC permanentResident) {
+        this.id = id;
         this.name = locationEnum.getName();
         this.type = locationEnum.getType();
         this.description = locationEnum.getDescription();
@@ -26,6 +28,10 @@ public class Location {
         this.permanentResident = permanentResident;
         this.visitors = new ArrayList<>();
         this.isSearched = false;
+        if(permanentResident != null){
+            permanentResident.setRole(locationEnum.getNPCRole());
+        }
+
     }
 
     @Override
@@ -52,6 +58,10 @@ public class Location {
 
     public String getName() {
         return name;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public LocationType getType() {

@@ -1,5 +1,7 @@
 package ru.noir.model.entities;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public enum NPCRole {
 
         BARTENDER("Бармен", "Протирал стойку весь вечер.")
@@ -19,6 +21,13 @@ public enum NPCRole {
     NPCRole(String title, String alibi) {
         this.title = title;
         this.alibi = alibi;
+    }
+
+    private static final NPCRole[] VALUES = values();
+
+    public static NPCRole getRandomRole() {
+        int randomIndex = ThreadLocalRandom.current().nextInt(VALUES.length);
+        return VALUES[randomIndex];
     }
 
     public String getAlibi() {

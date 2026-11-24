@@ -4,31 +4,34 @@ import ru.noir.model.Item.Item;
 import ru.noir.model.city.LocationEnum;
 
 public class NPC {
-    private final String id;
+    private final int id;
     private final String name;
-    private final NPCRole role;
+    private NPCRole role;
     private final boolean isHost;        // Хозяин локации или нет
-    private LocationEnum currentLocationId;    // Где реально находится
-    private LocationEnum claimedLocationId;    // Aлиби
+//    private LocationEnum currentLocationId;    // Где реально находится
+    private LocationEnum claimedLocation;    // Aлиби
     private String alibiText;
     private boolean isKiller;
     private boolean isVictim;
     private final Item rewardClue;       // Улика, которую может отдать
 
-    public NPC( String id, String name, NPCRole role, boolean isHost, LocationEnum currentLocationId, LocationEnum claimedLocationId, String alibiText, boolean isKiller, Item rewardClue ) {
+    //Builder
+    public NPC( int id, String name, NPCRole role, boolean isHost,
+                LocationEnum claimedLocationId,
+                boolean isKiller, Item rewardClue ) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.isHost = isHost;
-        this.currentLocationId = currentLocationId;
-        this.claimedLocationId = claimedLocationId;
-        this.alibiText = alibiText;
+//        this.currentLocationId = currentLocationId;
+        this.claimedLocation = claimedLocationId;
+        this.alibiText = role.getAlibi();
         this.isKiller = isKiller;
         this.rewardClue = rewardClue;
     }
 
-    public void setClaimedLocationId( LocationEnum claimedLocationId ) {
-        this.claimedLocationId = claimedLocationId;
+    public void setClaimedLocation(LocationEnum claimedLocation) {
+        this.claimedLocation = claimedLocation;
     }
 
     public void setAlibiText( String alibiText ) {
@@ -39,12 +42,17 @@ public class NPC {
         isKiller = killer;
     }
 
-    public void setCurrentLocationId( LocationEnum currentLocationId ) {
-        this.currentLocationId = currentLocationId;
+//    public void setCurrentLocationId( LocationEnum currentLocationId ) {
+//        this.currentLocationId = currentLocationId;
+//    }
+
+    public void setRole(NPCRole role){
+        this.role = role;
     }
 
 
-    public String getId() {
+
+    public int getId() {
         return id;
     }
 
@@ -60,12 +68,12 @@ public class NPC {
         return isHost;
     }
 
-    public LocationEnum getCurrentLocationId() {
-        return currentLocationId;
-    }
+//    public LocationEnum getCurrentLocationId() {
+//        return currentLocationId;
+//    }
 
-    public LocationEnum getClaimedLocationId() {
-        return claimedLocationId;
+    public LocationEnum getClaimedLocation() {
+        return claimedLocation;
     }
 
     public String getAlibiText() {
@@ -86,5 +94,10 @@ public class NPC {
 
     public void setVictim( boolean victim ) {
         isVictim = victim;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

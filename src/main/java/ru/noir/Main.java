@@ -1,19 +1,20 @@
 package ru.noir;
 
-import ru.noir.engine.CrimeGenerator;
 import ru.noir.engine.TimeManager;
 import ru.noir.model.city.Location;
-import ru.noir.model.city.LocationEnum;
 import ru.noir.model.entities.NPC;
-import ru.noir.model.entities.NPCRole;
+import ru.noir.model.entities.ResourceLoader;
+import ru.noir.model.investigation.CrimeCase;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.IOException;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        CrimeCase newCrimeCase = new CrimeCase(10, 5);
+
+
 
         System.out.println("Начало дела:");
 
@@ -22,36 +23,23 @@ public class Main {
 
         System.out.println("=== ИНИЦИАЛИЗАЦИЯ ДЕЛА ===");
 
-        //Список локаций для примера
-        List<Location> locations = new ArrayList<>();
-        locations.add(new Location(LocationEnum.BLUE_BIRD_BAR, 0, 0, null));
-        locations.add(new Location(LocationEnum.CENTRAL_PRECINCT, 1, 0, null));
-        locations.add(new Location(LocationEnum.CITY_MORGUE, 2, 0, null));
-        locations.add(new Location(LocationEnum.ABANDONED_WAREHOUSE, 3, 0, null));
-
-        // Список подозреваемых (NPC)
-        List<NPC> suspects = new ArrayList<>();
-        suspects.add(new NPC("npc_1", "Джек «Острый Глаз»", NPCRole.BARTENDER, true, LocationEnum.BLUE_BIRD_BAR, LocationEnum.BLUE_BIRD_BAR, "Я стоял за стойкой весь вечер.", false, null));
-        suspects.add(new NPC("npc_2", "Мэри Кэллехен", NPCRole.WITNESS, false, LocationEnum.SLEEPY_HOTEL, LocationEnum.SLEEPY_HOTEL, "Я спала в своей комнате.", false, null));
-        suspects.add(new NPC("npc_3", "Офицер Смит", NPCRole.POSTMAN, false, LocationEnum.CENTRAL_PRECINCT, LocationEnum.CENTRAL_PRECINCT, "Патрулировал улицы седьмого сектора.", false, null));
-
         try {
 
-            for(NPC npc : suspects){
-                System.out.println("id: " + npc.getId()+ "; " + npc.getName() + ": " + npc.getAlibiText());
+            for(NPC npc : newCrimeCase.getSuspects()){
+                System.out.println("id: " + npc.getId()+ "; " + npc.getRole().getTitle() + "; "+ npc.getName() + ": " + npc.getAlibiText());
             }
 
-            CrimeGenerator generator = new CrimeGenerator(new ArrayList<>(suspects), new ArrayList<>(locations));
+            for(Location l : newCrimeCase.getLocations()){
+                System.out.println("id: " + l.getId() + "; " + l.getName() + "; " + l.getPermanentResident());
+            }
+            System.out.println("Жертва: " + newCrimeCase.getVictim().getName());
+            System.out.println("Локация преступления: " + newCrimeCase.getMurderyLocation().getName());
+            System.out.println("Жертва: " + newCrimeCase.getKiller().getName());
 
             // 4. Выводим результаты расследования
             System.out.println("\n[Сгенерированное дело]");
-            System.out.println(generator.toString());
-            for(NPC npc : suspects){
-                if(!npc.isVictim())
-                    System.out.println(npc.getName() + ": " + npc.getAlibiText());
-            }
 
-            System.out.println("Настроящий убийца: " + generator.getKiller().getName() + ": " + generator.getKiller().getAlibiText());
+
 
             System.out.println("Выполнение какого-то действия (130 минут)");
             timeManager.addMinutes(130);
